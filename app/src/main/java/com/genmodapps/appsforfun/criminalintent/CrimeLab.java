@@ -32,6 +32,10 @@ public class CrimeLab {
         crimes.add(crime);
     }
 
+    public void deleteCrime(UUID id){
+        crimes.remove(getCrime(id));
+    }
+
     public List getCrimes(){
         return crimes;
     }

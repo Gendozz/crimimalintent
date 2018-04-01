@@ -12,4 +12,5 @@
     <string name="show_subtitle">Показать подзаголовок</string>
     <string name="hide_subtitle">Спрятать подзаголовок</string>
     <string name="subtitle_format">%1$d преступлений</string>
+    <string name="delete_crime">Удалить</string>
 </resources>
