@@ -3,6 +3,7 @@ package com.genmodapps.appsforfun.criminalintent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +27,8 @@ import java.util.List;
 
 public class CrimeListFragment extends Fragment {
     private RecyclerView crimeRecyclerView;
+    private ConstraintLayout emptyLayout;
+    private Button emptyButton;
     private CrimeAdapter adapter;
     private int adapterPosition;
     private boolean isSubtitleVisible;
@@ -47,6 +51,20 @@ public class CrimeListFragment extends Fragment {
         if(savedInstanceState != null){
             isSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
         }
+
+        emptyLayout = view.findViewById(R.id.emptyLayout);
+
+        emptyButton = view.findViewById(R.id.first_crime_button);
+        emptyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Crime crime = new Crime();
+                CrimeLab.get(getActivity()).addCrime(crime);
+                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+                startActivity(intent);
+            }
+        });
+
 
         updateUI();
 
@@ -123,6 +141,13 @@ public class CrimeListFragment extends Fragment {
         } else {
             adapter.notifyItemChanged(adapterPosition);
         }
+
+        emptyLayout.setVisibility(View.VISIBLE);
+
+        if(crimes.size() >= 1){
+            emptyLayout.setVisibility(View.INVISIBLE);
+        }
+
         upDateSubtitles();
 
     }
