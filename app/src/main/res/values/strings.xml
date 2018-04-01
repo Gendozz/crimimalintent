@@ -8,5 +8,4 @@
     <string name="press_to_start">Начало</string>
     <string name="press_to_end">Конец</string>
     <string name="date_picker_title">Дата преступления:</string>
-    <string name="time_picker_title">Время преступления</string>
 </resources>
