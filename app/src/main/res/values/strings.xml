@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Квартирные правонарушения</string>
+    <string name="crime_title_hint">Введите названия преступления.</string>
+    <string name="crime_title_label">Заголовок</string>
+    <string name="crime_details_label">Детали</string>
+    <string name="crime_solved_label">Раскрыто</string>
+    <string name="call_police">Позвонить в полицию</string>
+    <string name="press_to_start">Начало</string>
+    <string name="press_to_end">Конец</string>
+    <string name="date_picker_title">Дата преступления:</string>
+    <string name="time_picker_title">Время преступления</string>
+</resources>
