@@ -100,7 +100,10 @@ public class CrimeListFragment extends Fragment {
     private void upDateSubtitles(){
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         int crimesCount = crimeLab.getCrimes().size();
-        String subtitle = getString(R.string.subtitle_format, crimesCount);
+        int crimesSize = crimeLab.getCrimes().size();
+        //String subtitle = getString(R.string.subtitle_format, crimesCount);
+        String subtitle = getResources().getQuantityString(R.plurals.subtitlie_plurals, crimesSize, crimesSize);
+
         if(!isSubtitleVisible){
             subtitle = null;
         }

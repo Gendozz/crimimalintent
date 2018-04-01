@@ -13,4 +13,9 @@
     <string name="hide_subtitle">Спрятать подзаголовок</string>
     <string name="subtitle_format">%1$d преступлений</string>
     <string name="delete_crime">Удалить</string>
+    <plurals name="subtitlie_plurals">
+        <item quantity="one">%1$d преступление</item>
+        <item quantity="few">%1$d преступления</item>
+        <item quantity="many">%1$d преступлений</item>
+    </plurals>
 </resources>
