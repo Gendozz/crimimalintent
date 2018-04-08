@@ -19,8 +19,12 @@ public class Crime {
     private boolean requiresPolice;
 
     public Crime(){
-        id = UUID.randomUUID();
-        date = new Date();
+        this(UUID.randomUUID());
+    }
+
+    public Crime(UUID id){
+        this.id = id;
+        this.date = new Date();
     }
 
     public UUID getId() {
