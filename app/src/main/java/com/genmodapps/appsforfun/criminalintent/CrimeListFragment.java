@@ -122,7 +122,6 @@ public class CrimeListFragment extends Fragment {
             adapter.notifyDataSetChanged();
         }
         upDateSubtitles();
-
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
