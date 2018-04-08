@@ -119,7 +119,7 @@ public class CrimeListFragment extends Fragment {
             crimeRecyclerView.setAdapter(adapter);
         } else {
             adapter.setCrimes(crimes);
-            adapter.notifyItemChanged(adapterPosition);
+            adapter.notifyDataSetChanged();
         }
         upDateSubtitles();
 
