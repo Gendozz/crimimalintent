@@ -13,4 +13,15 @@
     <string name="hide_subtitle">Спрятать подзаголовок</string>
     <string name="subtitle_format">%1$d преступлений</string>
     <string name="delete_crime">Удалить преступление</string>
+    <string name="crime_suspect_text">Выбрать подозреваемого</string>
+    <string name="crime_report_text">Отправить отчёт о преступлении</string>
+    <string name="crime_report">%1$s!
+Преступление было выявлено %2$s. %3$s, и %4$s
+</string>
+    <string name="crime_report_solved">Дело раскрыто</string>
+    <string name="crime_report_unsolved">Дело не раскрыто</string>
+    <string name="crime_report_no_suspect">лица не установлены.</string>
+    <string name="crime_report_suspect">подозреваемый - %s.</string>
+    <string name="crime_report_subject">Отчёт о совершённом преступлении</string>
+    <string name="send_report">Отправить отчёт с помощью</string>
 </resources>

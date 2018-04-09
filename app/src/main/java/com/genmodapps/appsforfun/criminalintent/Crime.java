@@ -14,6 +14,7 @@ public class Crime {
     private Date date;
     private Date time;
     private boolean solved;
+    private String suspect;
 
     //Здесь начинается задание
     private boolean requiresPolice;
@@ -53,6 +54,14 @@ public class Crime {
 
     public void setSolved(boolean solved) {
         this.solved = solved;
+    }
+
+    public String getSuspect() {
+        return suspect;
+    }
+
+    public void setSuspect(String suspect) {
+        this.suspect = suspect;
     }
 
     public boolean isRequiresPolice() {
