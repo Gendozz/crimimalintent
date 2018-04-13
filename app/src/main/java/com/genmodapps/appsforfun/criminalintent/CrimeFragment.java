@@ -3,14 +3,18 @@ package com.genmodapps.appsforfun.criminalintent;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -23,11 +27,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 
 import android.text.format.DateFormat;
+
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static android.widget.CompoundButton.*;
@@ -36,16 +45,23 @@ import static android.widget.CompoundButton.*;
 public class CrimeFragment extends Fragment {
 
     private Crime crime;
+    private File photoFile;
     private EditText titleField;
     private Button dateButton;
     private CheckBox solvedCheckBox;
     private Button reportButton;
     private Button suspectButton;
+    private ImageButton photoButton;
+    private ImageView photoView;
+
+    private Button callSuspectButton;
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String TAG_DIALOG_DATE = "DialogDate";
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_CONTACT = 1;
+    private static final int REQUEST_PHOTO = 2;
+    private static final int REQUEST_PHONE_NUMBER = 3;
 
     public static CrimeFragment newInstance(UUID crimeID) {
         
@@ -60,9 +76,9 @@ public class CrimeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
         UUID crimeID = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         crime = CrimeLab.get(getActivity()).getCrime(crimeID);
+        photoFile = CrimeLab.get(getActivity()).getPhotoFile(crime);
     }
 
     @Override
@@ -176,6 +192,30 @@ public class CrimeFragment extends Fragment {
         if(packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null){
             suspectButton.setEnabled(false);
         }
+
+        photoButton = v.findViewById(R.id.crime_camera);
+
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        boolean canTakePhoto = photoFile != null && captureImage.resolveActivity(packageManager) != null;
+
+        photoButton.setEnabled(canTakePhoto);
+        photoButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = FileProvider.getUriForFile(getActivity(),
+                        "com.genmodapps.appsforfun.criminalintent.fileprovider", photoFile);
+                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                List<ResolveInfo> cameraActivities = getActivity().getPackageManager().queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo activity : cameraActivities ){
+                    getActivity().grantUriPermission(activity.activityInfo.packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    startActivityForResult(captureImage, REQUEST_PHOTO);
+                }
+            }
+        });
+
+        photoView = v.findViewById(R.id.crime_photo);
+        updatePhotoView();
+
         return v;
     }
 
@@ -206,7 +246,14 @@ public class CrimeFragment extends Fragment {
             } finally {
                 c.close();
             }
-        }
+        } else if (requestCode == REQUEST_PHOTO) {
+        Uri uri = FileProvider.getUriForFile(getActivity(),
+                "com.genmodapps.appsforfun.criminalintent.fileprovider",
+                this.photoFile);
+        getActivity().revokeUriPermission(uri,
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        updatePhotoView();
+    }
     }
 
     private void updateDate() {
@@ -234,6 +281,16 @@ public class CrimeFragment extends Fragment {
         String report = getString(R.string.crime_report, this.crime.getTitle(), dateString, solvedString, suspect);
         return report;
 
+    }
+
+    private void updatePhotoView() {
+        if (this.photoFile == null || !this.photoFile.exists()) {
+            this.photoView.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(
+                    this.photoFile.getPath(), getActivity());
+            this.photoView.setImageBitmap(bitmap);
+        }
     }
 
 }

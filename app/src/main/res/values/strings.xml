@@ -24,4 +24,5 @@
     <string name="crime_report_suspect">подозреваемый - %s.</string>
     <string name="crime_report_subject">Отчёт о совершённом преступлении</string>
     <string name="send_report">Отправить отчёт с помощью</string>
+    <string name="call_suspect">Позвонить злодею</string>
 </resources>
